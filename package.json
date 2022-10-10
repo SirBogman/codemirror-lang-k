@@ -1,10 +1,10 @@
 {
-  "name": "codemirror-lang-EXAMPLE",
+  "name": "codemirror-lang-k",
   "version": "0.1.0",
-  "description": "EXAMPLE language support for CodeMirror",
+  "description": "K language support for CodeMirror",
   "scripts": {
     "test": "mocha test/test.js",
-    "prepare": "rollup -c"
+    "prepare": "lezer-generator src/syntax.grammar -o src/parser && rollup -c"
   },
   "type": "module",
   "main": "dist/index.cjs",
@@ -27,6 +27,10 @@
     "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-ts": "^3.0.2",
     "typescript": "^4.3.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SirBogman/codemirror-lang-k.git"
   },
   "license": "MIT"
 }

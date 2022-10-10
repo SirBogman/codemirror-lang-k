@@ -1,26 +1,34 @@
-@top Program { expression* }
-
-@skip { space | LineComment }
-
-expression {
-  Identifier |
-  String |
-  Boolean |
-  Application { "(" expression* ")" }
+@top Program { exprs* }
+@skip { space }
+exprs { expr Delimiter exprs | expr | Comment | MultilineComment | MultilineCommentToEOF }
+expr {
+  term |
+  term SquareBrackets { "[" exprs "]" } |
+  Parentheses { "(" exprs ")" } |
+  Function { "{" exprs "}" }
 }
-
+term { noun | verb | adverb }
+verb { Verb | Minus }
+adverb { Adverb | Backslash | Slash }
+noun { Name | Number | String | Symbol }
 @tokens {
-  Identifier { $[a-zA-Z_\-0-9]+ }
-
-  String { '"' (!["\\] | "\\" _)* '"' }
-
-  Boolean { "#t" | "#f" }
-
-  LineComment { ";" ![\n]* }
-
+  Delimiter { ";" }
+  Adverb { "'" | "':" }
+  Verb { Verb1 | Verb1 ":" }
+  Verb1 { ":" | "+" | "*" | "%" | "!" | "&" | "|" | "<" | ">" | "=" | "~" | "," | "^" | "#" | "_" | "$" | "?" | "@" | "." | @digit ":" }
+  Name { Name1 "." Name | Name1 }
+  Name1 { @asciiLetter (@asciiLetter | @digit)* }
+  String { '"' (!["\\\n] | "\n " | "\\" _)* '"' | HexString }
+  HexString { "0x" Bytes }
+  Bytes { HexDigit HexDigit Bytes | "" }
+  Symbol { "`" | "`" Name | "`" String }
+  HexDigit { @digit | $[a-f] }
   space { $[ \t\n\r]+ }
-
   "(" ")"
+  "[" "]"
+  "{" "}"
 }
-
+@external tokens slashOrComment from "./tokens" { Comment, MultilineComment, Slash }
+@external tokens backslashOrMultilineCommentToEOF from "./tokens" { Backslash, MultilineCommentToEOF }
+@external tokens minusOrNumber from "./tokens" { Minus, Number }
 @detectDelim

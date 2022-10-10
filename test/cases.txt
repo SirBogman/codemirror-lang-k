@@ -1,41 +1,207 @@
-# Booleans
+# One number.
+100
+==> Program(Number)
 
-#t
-#f
+# Two numbers.
+100
+200
+==> Program(Number, Number)
 
-==>
+# Comment after space.
+100 /Comment
+200
+==> Program(Number, Comment, Number)
 
-Program(Boolean, Boolean)
+# Comment after space 2.
+100 300 /Comment
+200
+==> Program(Number, Number, Comment, Number)
 
-# Identifiers
+# Comment that could be confused with an adverb.
+100 300 /:
+200
+==> Program(Number, Number, Comment, Number)
 
-one
-Two_Three
+# Comment after newline.
+100
+/Comment
+200
+==> Program(Number, Comment, Number)
 
-==>
+# / adverb 1.
+100/200
+==> Program(Number, Slash, Number)
 
-Program(Identifier, Identifier)
+# / adverb 2.
+100+/200
+==> Program(Number, Verb, Slash, Number)
 
-# Strings
+# /: adverb. Note that /: is really one adverb, but it's easier to deal with and highlights the same as an Slash and a Verb.
+100/:200
+==> Program(Number, Slash, Verb, Number)
 
-"hello"
-"one\"\\two"
+# \ adverb 1.
+100\200
+==> Program(Number, Backslash, Number)
 
-==>
+# \ adverb 2.
+100+\200
+==> Program(Number, Verb, Backslash, Number)
 
-Program(String, String)
+# \: adverb. Note that /: is really one adverb, but it's easier to deal with and highlights the same as an Backslash and a Verb.
+100\:200
+==> Program(Number, Backslash, Verb, Number)
 
-# Applications
+# Comment after newline 2
+100/200
+/Comment
+==> Program(Number, Slash, Number, Comment)
 
-(begin
-  (when #t
-    (print (concat "hello" " " "world")))
-  (print "DONE"))
+# Comment at the start of the first line.
+/Comment
+200
+==> Program(Comment, Number)
 
-==>
+# Multiline comment at start
+/
+Comment
+More Comment
+\
+200
+==> Program(MultilineComment, Number)
 
-Program(Application(
-  Identifier,
-  Application(Identifier, Boolean, Application(
-    Identifier, Application(Identifier, String, String, String)))
-  Application(Identifier, String)))
+# Multiline comment after start
+100
+/
+Comment
+More Comment
+\
+200
+==> Program(Number, MultilineComment, Number)
+
+# Multiline comment at end
+100
+/
+Comment
+More Comment
+\
+==> Program(Number, MultilineComment)
+
+# Multiline comment to EOF
+100
+\\
+Comment
+More Comment
+==> Program(Number, MultilineCommentToEOF)
+
+# Multiline comment to EOF at start of file
+\\
+Comment
+More Comment
+==> Program(MultilineCommentToEOF)
+
+# Two numbers
+100 99 ==> Program(Number, Number)
+
+# Two numbers, one negative
+100 -99 ==> Program(Number, Number)
+
+# Verb usage of `-`, with space
+100- 99 ==> Program(Number, Minus, Number)
+
+# Verb usage of `-`, without space
+100-99 ==> Program(Number, Minus, Number)
+
+# Verb usage of `-` with names
+a-b ==> Program(Name, Minus, Name)
+
+# Verb usage of `-` with one name
+a-9 ==> Program(Name, Minus, Number)
+
+# Verb usage of `-` with one name (2)
+a - 9 ==> Program(Name, Minus, Number)
+
+# Number starting with zero
+0 ==> Program(Number)
+
+# Hex string
+0xafbc ==> Program(String)
+
+# Floats
+1.0 2. 2e 2e- 123.45e2 10e 20e-2 ==> Program(Number, Number, Number, Number, Number, Number, Number)
+
+# Symbols
+`foo`bar ==> Program(Symbol, Symbol)
+
+# String
+"foo" ==> Program(String)
+
+# String 2
+"foo\"" ==> Program(String)
+
+# Multiline String
+"foo
+ bar" ==> Program(String)
+
+# Hex String
+0x0123456789abcdef ==> Program(String)
+
+# Delimiter
+"foo";"bar" ==> Program(String, Delimiter, String)
+
+# Names
+foo foo.bar foo2 ==> Program(Name, Name, Name)
+
+# Parenthesis
+(9) ==> Program(Parentheses("(", Number, ")"))
+
+# Square Brackets
+9[9] ==> Program(Number, SquareBrackets("[", Number, "]"))
+
+# Function
+{9} ==> Program(Function("{", Number, "}"))
+
+# Output
+`0:"ABC" ==> Program(Symbol, Verb, String)
+
+# Adverbs
+'': ===> Program(Adverb, Adverb)
+
+# Verbs 1  (`:` may not really be a verb, but it's close enough for highlighting)
+:+*%! ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 2
+&|<>= ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 3
+~,^#_ ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 4
+$?@. ==> Program(Verb, Verb, Verb, Verb)
+
+# Verbs 5
+0:1:2:3:4: ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 6
+5:6:7:8:9: ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 1a
+::+:*:%:!: ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 2a
+&:|:<:>:=: ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 3a
+~:,:^:#:_: ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 4a
+$:?:@:.: ==> Program(Verb, Verb, Verb, Verb)
+
+# Verbs 5a
+0::1::2::3::4:: ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Verbs 6a
+5::6::7::8::9:: ==> Program(Verb, Verb, Verb, Verb, Verb)
+
+# Delimiter
+900;100 ==> Program(Number, Delimiter, Number)
