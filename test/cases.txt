@@ -146,8 +146,11 @@ a - 9 ==> Program(Name, Minus, Number)
 # Hex String
 0x0123456789abcdef ==> Program(String)
 
-# Delimiter
+# Delimiter 1
 "foo";"bar" ==> Program(String, Delimiter, String)
+
+# Delimiter 2
+"foo"; ==> Program(String, Delimiter)
 
 # Names
 foo foo.bar foo2 ==> Program(Name, Name, Name)
@@ -159,7 +162,10 @@ foo foo.bar foo2 ==> Program(Name, Name, Name)
 9[9] ==> Program(Number, SquareBrackets("[", Number, "]"))
 
 # Function
-{9} ==> Program(Function("{", Number, "}"))
+{9+9} ==> Program(Function("{", Number, Verb, Number, "}"))
+
+# Function 2
+{9+{_?}9} ==> Program(Function("{", Number, Verb, Function("{", Verb, Verb, "}"), Number, "}"))
 
 # Output
 `0:"ABC" ==> Program(Symbol, Verb, String)
@@ -202,6 +208,3 @@ $:?:@:.: ==> Program(Verb, Verb, Verb, Verb)
 
 # Verbs 6a
 5::6::7::8::9:: ==> Program(Verb, Verb, Verb, Verb, Verb)
-
-# Delimiter
-900;100 ==> Program(Number, Delimiter, Number)

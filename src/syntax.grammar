@@ -1,13 +1,17 @@
 @top Program { exprs* }
 @skip { space }
-exprs { expr Delimiter exprs | expr | Comment | MultilineComment | MultilineCommentToEOF }
-expr {
-  term |
-  term SquareBrackets { "[" exprs "]" } |
-  Parentheses { "(" exprs ")" } |
-  Function { "{" exprs "}" }
+exprs {
+  noun |
+  verb |
+  adverb |
+  Delimiter |
+  exprs SquareBrackets { "[" exprs* "]" } |
+  Parentheses { "(" exprs* ")" } |
+  Function { "{" exprs* "}" } |
+  Comment |
+  MultilineComment |
+  MultilineCommentToEOF
 }
-term { noun | verb | adverb }
 verb { Verb | Minus }
 adverb { Adverb | Backslash | Slash }
 noun { Name | Number | String | Symbol }
