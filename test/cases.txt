@@ -115,11 +115,41 @@ More Comment
 # Verb usage of `-` with names
 a-b ==> Program(Name, Minus, Name)
 
+# Verb usage of `-` with names 2
+z-b ==> Program(Name, Minus, Name)
+
+# Verb usage of `-` with names 3
+A-b ==> Program(Name, Minus, Name)
+
+# Verb usage of `-` with names 4
+Z-b ==> Program(Name, Minus, Name)
+
 # Verb usage of `-` with one name
 a-9 ==> Program(Name, Minus, Number)
 
 # Verb usage of `-` with one name (2)
 a - 9 ==> Program(Name, Minus, Number)
+
+# Add two numbers, one negative
+100+-99 ==> Program(Number, Verb, Number)
+
+# ! positive
+10!x ==> Program(Number, Verb, Name)
+
+# ! negative
+-10!x ==> Program(Number, Verb, Name)
+
+# ! positive, then add
+9+10!x ==> Program(Number, Verb, Number, Verb, Name)
+
+# ! negative, then add
+9+-10!x ==> Program(Number, Verb, Number, Verb, Name)
+
+# @-
+@-3 2 ==> Program(Verb, Number, Number)
+
+# _-
+_-3 2 ==> Program(Verb, Number, Number)
 
 # Number starting with zero
 0 ==> Program(Number)

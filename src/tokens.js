@@ -4,7 +4,8 @@
 import { ExternalTokenizer } from "@lezer/lr"
 import { Backslash, Comment, Minus, MultilineComment, MultilineCommentToEOF, Number, Slash } from "./parser.terms.js"
 
-const backslash = 92, e = 101, eof = -1, minus = 45, newline = 10, nine = 57, period = 46, slash = 47, space = 32, x = 120, zero = 48;
+const A = 65, a = 97, backslash = 92, e = 101, eof = -1, minus = 45, newline = 10, nine = 57,
+    period = 46, slash = 47, space = 32, x = 120, Z = 90, z = 122, zero = 48;
 
 // This tokenizer is needed to determine whether a `/` is used as an adverb or is
 // the beginning of a comment. This requires looking at the previous character and
@@ -94,7 +95,8 @@ export const minusOrNumber = new ExternalTokenizer(input => {
 
     input.advance();
 
-    if (prev === space || prev === newline || pos === 0) {
+    if (prev === space || prev === newline || pos === 0 ||
+        ((prev < zero || prev > nine) && (prev < A || prev > Z) && (prev < a || prev > z))) {
         if (parseNumber(input)) {
             input.acceptToken(Number);
             return;
