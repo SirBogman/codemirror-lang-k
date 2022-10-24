@@ -127,6 +127,24 @@ Z-b ==> Program(Name, Minus, Name)
 # Verb usage of `-` with one name
 a-9 ==> Program(Name, Minus, Number)
 
+# Verb usage of `-` following `)`
+(a)-9 ==> Program(Parentheses("(", Name, ")"), Minus, Number)
+
+# Verb usage of `-` with following `]`
+a[b]-9 ==> Program(Name, SquareBrackets("[", Name, "]"), Minus, Number)
+
+# Verb usage of `-` with following `}`
+{a}-9 ==> Program(Function("{", Name, "}"), Minus, Number)
+
+# Negative number with ()
+(-9) ==> Program(Parentheses("(", Number, ")"))
+
+# Negative number with []
+a[-9] ==> Program(Name, SquareBrackets("[", Number, "]"))
+
+# Negative number with {}
+{-9} ==> Program(Function("{", Number, "}"))
+
 # Verb usage of `-` with one name (2)
 a - 9 ==> Program(Name, Minus, Number)
 

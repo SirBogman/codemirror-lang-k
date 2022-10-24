@@ -4,8 +4,9 @@
 import { ExternalTokenizer } from "@lezer/lr"
 import { Backslash, Comment, Minus, MultilineComment, MultilineCommentToEOF, Number, Slash } from "./parser.terms.js"
 
-const A = 65, a = 97, backslash = 92, e = 101, eof = -1, minus = 45, newline = 10, nine = 57,
-    period = 46, slash = 47, space = 32, x = 120, Z = 90, z = 122, zero = 48;
+const A = 65, a = 97, backslash = 92, closeBrackets = 125, closeParenthesis = 41,
+    closeSquareBrackets = 93, e = 101, eof = -1, minus = 45, newline = 10, nine = 57, period = 46,
+    slash = 47, space = 32, x = 120, Z = 90, z = 122, zero = 48;
 
 // This tokenizer is needed to determine whether a `/` is used as an adverb or is
 // the beginning of a comment. This requires looking at the previous character and
@@ -75,10 +76,10 @@ export const backslashOrMultilineCommentToEOF = new ExternalTokenizer(input => {
 });
 
 // This tokenizer is needed to determine whether a `-` is used as an verb or
-// the beginning of a number. This requires looking at the previous character and
-// the position in the input. This tokenizer also includes full support for parsing
-// floating point numbers and is a convenient way to avoid some overlapping tokens,
-// such as `.e`, that would occur when using the built-in tokenizer.
+// the beginning of a number. This requires looking at the previous character.
+// This tokenizer also includes full support for parsing floating point numbers
+// and is a convenient way to avoid some overlapping tokens, such as `.e`, that
+// would occur when using the built-in tokenizer.
 export const minusOrNumber = new ExternalTokenizer(input => {
     if (input.next >= zero && input.next <= nine && input.peek(1) !== x) {
         parseNumber(input);
@@ -91,12 +92,11 @@ export const minusOrNumber = new ExternalTokenizer(input => {
     }
 
     const prev = input.peek(-1);
-    const pos = input.pos;
 
     input.advance();
 
-    if (prev === space || prev === newline || pos === 0 ||
-        ((prev < zero || prev > nine) && (prev < A || prev > Z) && (prev < a || prev > z))) {
+    if ((prev < zero || prev > nine) && (prev < A || prev > Z) && (prev < a || prev > z) &&
+        prev !== closeBrackets && prev !== closeParenthesis && prev !== closeSquareBrackets) {
         if (parseNumber(input)) {
             input.acceptToken(Number);
             return;
