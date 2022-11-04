@@ -181,6 +181,15 @@ _-3 2 ==> Program(Verb, Number, Number)
 # Symbols
 `foo`bar ==> Program(Symbol, Symbol)
 
+# Symbols with 2-byte UTF-8 codepoints
+`£`Я ==> Program(Symbol, Symbol)
+
+# Symbols with 3-byte UTF-8 codepoints
+`♥`景 ==> Program(Symbol, Symbol)
+
+# Symbols with 4-byte UTF-8 codepoints
+`𐀀`😃 ==> Program(Symbol, Symbol)
+
 # String
 "foo" ==> Program(String)
 
@@ -221,7 +230,7 @@ foo foo.bar foo2 ==> Program(Name, Name, Name)
 # Adverbs
 '': ===> Program(Adverb, Adverb)
 
-# Verbs 1  (`:` may not really be a verb, but it's close enough for highlighting)
+# Verbs 1
 :+*%! ==> Program(Verb, Verb, Verb, Verb, Verb)
 
 # Verbs 2

@@ -25,7 +25,9 @@ noun { Name | Number | String | Symbol }
   String { '"' (!["\\\n] | "\n " | "\\" _)* '"' | HexString }
   HexString { "0x" Bytes }
   Bytes { HexDigit HexDigit Bytes | "" }
-  Symbol { "`" | "`" Name | "`" String }
+  Symbol { "`" | "`" (Name | String | MultibyteChar) }
+  // Upper range of multibyte char should be \u{10ffff}, but test cases fail for 4 byte UTF-8 codepoints.
+  MultibyteChar { $[\u{80}-\u{10fffe}] }
   HexDigit { @digit | $[a-f] }
   space { $[ \t\n\r]+ }
   "(" ")"
