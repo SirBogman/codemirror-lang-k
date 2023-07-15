@@ -1,11 +1,11 @@
 /* Hand-written tokenizers for K tokens that can't be
    expressed by lezer's built-in tokenizer. */
 
-import { ExternalTokenizer } from "@lezer/lr"
-import { Backslash, Comment, Minus, MultilineComment, MultilineCommentToEOF, Number, Slash } from "./parser.terms.js"
+import { ExternalTokenizer } from "@lezer/lr";
+import { Backslash, Comment, Minus, MultilineComment, MultilineCommentToEOF, Number, Slash } from "./parser.terms.js";
 
 const A = 65, a = 97, backslash = 92, closeBrackets = 125, closeParenthesis = 41,
-    closeSquareBrackets = 93, e = 101, eof = -1, minus = 45, newline = 10, nine = 57, period = 46,
+    closeSquareBrackets = 93, e = 101, eof = -1, minus = 45, N = 78, n = 110, newline = 10, nine = 57, period = 46,
     slash = 47, space = 32, x = 120, Z = 90, z = 122, zero = 48;
 
 // This tokenizer is needed to determine whether a `/` is used as an adverb or is
@@ -81,6 +81,7 @@ export const backslashOrMultilineCommentToEOF = new ExternalTokenizer(input => {
 // and is a convenient way to avoid some overlapping tokens, such as `.e`, that
 // would occur when using the built-in tokenizer.
 export const minusOrNumber = new ExternalTokenizer(input => {
+    // Don't allow a trailing `x`, since that overlaps with hexadecimal constants like `0x100`.
     if (input.next >= zero && input.next <= nine && input.peek(1) !== x) {
         parseNumber(input);
         input.acceptToken(Number);
@@ -108,9 +109,19 @@ export const minusOrNumber = new ExternalTokenizer(input => {
 
 const parseNumber = input => {
     let isNumber;
+    let isSingleZero;
     while (input.next >= zero && input.next <= nine) {
+        isSingleZero = !isNumber && input.next === zero;
         isNumber = true;
         input.advance();
+    }
+
+    if (isSingleZero) {
+        // Support `0N` and `0n`.
+        if (input.next === n || input.next === N) {
+            input.advance();
+        }
+        return true;
     }
 
     if (isNumber) {

@@ -7,6 +7,21 @@
 200
 ==> Program(Number, Number)
 
+# Special numbers
+0N
+==> Program(Number)
+
+# Special numbers
+0n
+==> Program(Number)
+
+# Invalid special numbers
+00N
+1N
+00n
+1n
+==> Program(Number, Name, Number, Name, Number, Name, Number, Name)
+
 # Comment after space.
 100 /Comment
 200
