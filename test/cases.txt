@@ -191,7 +191,7 @@ _-3 2 ==> Program(Verb, Number, Number)
 0xafbc ==> Program(String)
 
 # Floats
-1.0 2. 2e 2e- 123.45e2 10e 20e-2 ==> Program(Number, Number, Number, Number, Number, Number, Number)
+0. 0e 1.0 2. 2e 2e- 123.45e2 10e 20e-2 ==> Program(Number, Number, Number, Number, Number, Number, Number, Number, Number)
 
 # Symbols
 `foo`bar ==> Program(Symbol, Symbol)

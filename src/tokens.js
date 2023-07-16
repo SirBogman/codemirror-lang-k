@@ -116,11 +116,9 @@ const parseNumber = input => {
         input.advance();
     }
 
-    if (isSingleZero) {
+    if (isSingleZero && (input.next === n || input.next === N)) {
         // Support `0N` and `0n`.
-        if (input.next === n || input.next === N) {
-            input.advance();
-        }
+        input.advance();
         return true;
     }
 
