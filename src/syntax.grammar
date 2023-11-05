@@ -22,7 +22,7 @@ noun { Name | Number | String | Symbol }
   Verb1 { ":" | "+" | "*" | "%" | "!" | "&" | "|" | "<" | ">" | "=" | "~" | "," | "^" | "#" | "_" | "$" | "?" | "@" | "." | @digit ":" }
   Name { Name1 "." Name | Name1 }
   Name1 { @asciiLetter (@asciiLetter | @digit)* }
-  String { '"' (!["\\\n] | "\n " | "\\" _)* '"' | HexString }
+  String { '"' (!["\\] | "\\" _)* '"' | HexString }
   HexString { "0x" Bytes }
   Bytes { HexDigit HexDigit Bytes | "" }
   Symbol { "`" | "`" (Name | String | MultibyteChar) }

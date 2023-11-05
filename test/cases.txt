@@ -215,6 +215,14 @@ _-3 2 ==> Program(Verb, Number, Number)
 "foo
  bar" ==> Program(String)
 
+# Multiline String 2
+"foo
+bar" ==> Program(String)
+
+# Multiline String 3
+"
+" ==> Program(String)
+
 # Hex String
 0x0123456789abcdef ==> Program(String)
 
